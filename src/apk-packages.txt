@@ -53,7 +53,6 @@ py3-appdirs
 py3-parsing
 py3-six
 py3-cached-property
-dockerpy-creds
 py3-cparser
 py3-idna
 py3-asn1crypto
@@ -143,7 +142,6 @@ py3-setuptools
 py3-pip
 py3-pip-doc
 exa
-exa-doc
 perl
 perl-doc
 perl-error
@@ -168,7 +166,6 @@ the_silver_searcher-doc
 bash
 bash-completion
 bash-doc
-docker-compose-bash-completion
 bash-completion-doc
 fd-bash-completion
 kmod-bash-completion
@@ -299,7 +296,6 @@ openssh-doc
 perl-git
 git-perl
 py3-toml
-py3-pep517
 py3-inflect
 py3-jaraco-itertools
 py3-func-timeout
@@ -323,5 +319,7 @@ build-base
 zsh
 zsh-syntax-highlighting
 zsh-autosuggestions
-
-
+docker-compose-bash-completion
+exa-doc
+dockerpy-creds
+py3-pep517
