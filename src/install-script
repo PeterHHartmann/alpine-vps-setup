@@ -30,6 +30,7 @@ hostname alpine-dev && hostname > /etc/hostname
 
 # Configure apk repos; do update, upgrade, and install
 echo "Configuring repositories and software installtion ..."
+cp "$SOURCEPATH/apk-repositories" /etc/apk/repositories
 apk update
 echo "Upgrading software ..."
 apk upgrade
