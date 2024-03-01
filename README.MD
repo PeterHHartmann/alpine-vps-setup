@@ -69,10 +69,22 @@ Next, we can clone the repository:
 git clone https://github.com/PeterHHartmann/alpine-vps-setup.git
 ```
 
+ensure that install script is executable.
+
+```bash
+chmod +x ./alpine-vps-setup.git/src/install-script
+```
+
 The script needs to know your username before running install.
 
 ```bash
 export NEWUSER=peter
+```
+
+The script needs to know your new hostname before running install.
+
+```bash
+export NEWHOSTNAME=peter-vpc
 ```
 
 Now we are ready to run the installation script:
