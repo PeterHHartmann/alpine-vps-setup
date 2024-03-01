@@ -30,11 +30,11 @@ hostname alpine-dev && hostname > /etc/hostname
 
 # Configure apk repos; do update, upgrade, and install
 echo "Configuring repositories and software installtion ..."
-apk update > /dev/null 2>&1
+apk update
 echo "Upgrading software ..."
-apk upgrade > /dev/null 2>&1
+apk upgrade
 echo "Installing software ..."
-xargs apk add < "$SOURCEPATH/apk-packages.txt" > /dev/null 2>&1
+xargs apk add < "$SOURCEPATH/apk-packages.txt"
 
 # Change welcome message
 echo "Customize welcome message ..."
