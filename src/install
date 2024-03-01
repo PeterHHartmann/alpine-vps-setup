@@ -1,0 +1,72 @@
+#!/bin/sh
+
+# Make sure $NEWUSER variable is set or break
+if [ -z "$NEWUSER" ]; then
+    printf "\n\n** NEWUSER NOT SET **\n\n";
+    break;
+fi
+
+
+# Set path for source files
+SOURCEPATH="$HOME/vps-reference-config/install"
+
+# Configure timezone
+echo "Configuring timezone ..."
+setup-timezone Europe/Copenhagen
+
+# Configure host name
+echo "Configuring host name ..."
+hostname kea-dev && hostname > /etc/hostname
+
+# Configure apk repos; do update, upgrade, and install
+echo "Configuring repositories and software installtion ..."
+cp "$SOURCEPATH/apk-repositories" /etc/apk/repositories
+echo "Updating software ..."
+apk update 1> /dev/null
+echo "Upgrading software ..."
+apk upgrade 1> /dev/null
+echo "Installing software ..."
+xargs apk add < "$SOURCEPATH/apk-packages.txt" 1> /dev/null
+
+# Change welcome message
+echo "Customize welcome message ..."
+cp "$SOURCEPATH/motd" /etc/motd
+
+# Configure init system to start docker on boot
+echo "Configuring docker ..."
+rc-update add docker
+
+# Configure sshd service
+echo "Configuring sshd ..."
+cp "$SOURCEPATH/sshd_config" /etc/ssh/sshd_config
+service sshd restart
+
+# Configue fail2ban service
+echo "Configuring fail2ban ..."
+cp "$SOURCEPATH/alpine-ssh.conf" /etc/fail2ban/jail.d/.
+cp "$SOURCEPATH/alpine-sshd-key.conf" /etc/fail2ban/filter.d/.
+rc-update add fail2ban
+service fail2ban start
+
+# Add and configure user
+echo "Adding user ..."
+adduser "$NEWUSER" -s /bin/zsh -D
+addgroup "$NEWUSER" docker
+addgroup "$NEWUSER" wheel
+echo "$NEWUSER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/keauser.txt
+cat /etc/sudoers.d/keauser.txt >> /etc/sudoers
+
+# User tasks
+echo "Authorizing clients ..."
+# sudo -i -u "$NEWUSER" ssh-keygen -t ed25519 -a 100 -f "/home/$NEWUSER/.ssh/id_ed25519" -N "" -q
+mkdir "/home/$NEWUSER/.ssh"
+cp /root/.ssh/authorized_keys "/home/$NEWUSER/.ssh/."
+
+# Set ownership on home directory
+echo "Taking ownership of home directory ..."
+chown -R "$NEWUSER":"$NEWUSER" "/home/$NEWUSER"
+
+# Display post install message
+printf "Suggested password - don't forget to write it down and keep safe: "
+openssl rand -base64 16 | sed 's/[^a-zA-Z0-9]//g' | cut -c 1-15
+cat "$SOURCEPATH/post-install-message.txt"
