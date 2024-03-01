@@ -6,6 +6,11 @@ if [ -z "$NEWUSER" ]; then
     break;
 fi
 
+if [ -z "$NEWHOSTNAME" ]; then
+    printf "\n\n** NEWHOSTNAME NOT SET **\n\n";
+    break;
+fi
+
 
 # Set path for source files
 SOURCEPATH="$HOME/alpine-vps-setup/src"
@@ -16,12 +21,10 @@ setup-timezone Europe/Copenhagen
 
 # Configure host name
 echo "Configuring host name ..."
-hostname kea-dev && hostname > /etc/hostname
+hostname alpine-dev && hostname > /etc/hostname
 
 # Configure apk repos; do update, upgrade, and install
 echo "Configuring repositories and software installtion ..."
-cp "$SOURCEPATH/apk-repositories" /etc/apk/repositories
-echo "Updating software ..."
 apk update 1> /dev/null
 echo "Upgrading software ..."
 apk upgrade 1> /dev/null
