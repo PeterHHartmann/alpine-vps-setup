@@ -74,9 +74,6 @@ ldns-doc
 drill
 popt
 popt-doc
-fail2ban
-fail2ban-doc
-fail2ban-openrc
 fts
 gmp
 gmp-doc
@@ -319,7 +316,6 @@ build-base
 zsh
 zsh-syntax-highlighting
 zsh-autosuggestions
-docker-compose-bash-completion
-exa-doc
-dockerpy-creds
-py3-pep517
+fail2ban
+fail2ban-doc
+fail2ban-openrc
