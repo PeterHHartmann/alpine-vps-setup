@@ -1,16 +1,20 @@
 #!/bin/sh
 
+if [ "$EUID" -ne 0 ]; then
+    echo "This script requires root privileges. Please run as root."
+    exit 1
+fi
+
 # Make sure $NEWUSER variable is set or break
 if [ -z "$NEWUSER" ]; then
-    printf "\n\n** NEWUSER NOT SET **\n\n";
-    break;
+    printf "\n\n** NEWUSER NOT SET **\n\n"
+    exit 1
 fi
 
 if [ -z "$NEWHOSTNAME" ]; then
-    printf "\n\n** NEWHOSTNAME NOT SET **\n\n";
-    break;
+    printf "\n\n** NEWHOSTNAME NOT SET **\n\n"
+    exit 1
 fi
-
 
 # Set path for source files
 SOURCEPATH="$HOME/alpine-vps-setup/src"
@@ -25,11 +29,11 @@ hostname alpine-dev && hostname > /etc/hostname
 
 # Configure apk repos; do update, upgrade, and install
 echo "Configuring repositories and software installtion ..."
-apk update 1> /dev/null
+apk update > /dev/null 2>&1
 echo "Upgrading software ..."
-apk upgrade 1> /dev/null
+apk upgrade > /dev/null 2>&1
 echo "Installing software ..."
-xargs apk add < "$SOURCEPATH/apk-packages.txt" 1> /dev/null
+xargs apk add < "$SOURCEPATH/apk-packages.txt" > /dev/null 2>&1
 
 # Change welcome message
 echo "Customize welcome message ..."
