@@ -8,7 +8,7 @@ fi
 
 
 # Set path for source files
-SOURCEPATH="$HOME/vps-reference-config/install"
+SOURCEPATH="$HOME/alpine-vps-setup/src"
 
 # Configure timezone
 echo "Configuring timezone ..."
